@@ -15,12 +15,10 @@ topic = st.text_input(
 
 st.write("You selected:", topic)
 
-user_input = st.chat_input(
-    "Ask me something about your topic..."
-)
+user_input = st.chat_input("Ask me something about your topic...")
 
 if user_input:
     st.chat_message("user").write(user_input)
     st.chat_message("assistant").write(
-        f"You asked about **{topic}**: {user_input}"
+        f"Your question is about **{topic}**: {user_input}"
     )
