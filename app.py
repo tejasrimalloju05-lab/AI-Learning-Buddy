@@ -9,3 +9,8 @@ topic = st.text_input(
 )
 
 st.write("You selected:", topic)
+
+user_input = st.chat_input("💬 Ask something about your topic...")
+
+if user_input:
+    st.write("You asked:", user_input)
