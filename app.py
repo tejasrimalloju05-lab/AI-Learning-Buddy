@@ -1,7 +1,7 @@
 import streamlit as st
 
 st.title("🎓 AI Learning Buddy")
-st.write("My Streamlit app is working!")
+st.write("An AI-powered learning assistant for interactive learning.")
 
 topic = st.text_input(
     "📚 Enter a topic",
