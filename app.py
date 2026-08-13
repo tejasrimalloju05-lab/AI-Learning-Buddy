@@ -1,6 +1,5 @@
 import streamlit as st
 import google.generativeai as genai
-import os
 
 # -----------------------------
 # Page Configuration
@@ -17,11 +16,11 @@ st.write("An AI-powered learning assistant for interactive learning.")
 # -----------------------------
 # Gemini API Configuration
 # -----------------------------
-api_key = os.getenv("GEMINI_API_KEY")
+api_key = st.secrets.get("GEMINI_API_KEY")
 
 if not api_key:
     st.error("Gemini API key is not configured.")
-    st.info("Please set the GEMINI_API_KEY environment variable.")
+    st.info("Please set the GEMINI_API_KEY in Streamlit secrets.")
     st.stop()
 
 genai.configure(api_key=api_key)
@@ -42,18 +41,17 @@ else:
     st.warning("Please enter a topic before asking a question.")
 
 # -----------------------------
-# Clear Chat Button
-# -----------------------------
-if st.button("🗑️ Clear Chat"):
-    st.session_state.messages = []
-    st.rerun()
-
-# -----------------------------
 # Chat History
 # -----------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Clear Chat
+if st.button("🗑️ Clear Chat"):
+    st.session_state.messages = []
+    st.rerun()
+
+# Display Chat History
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
@@ -71,7 +69,7 @@ if user_input:
         st.warning("Please enter a topic first.")
         st.stop()
 
-    # Display user message
+    # Display User Message
     st.session_state.messages.append(
         {
             "role": "user",
@@ -82,9 +80,7 @@ if user_input:
     with st.chat_message("user"):
         st.markdown(user_input)
 
-    # -----------------------------
-    # Prompt
-    # -----------------------------
+    # AI Prompt
     prompt = f"""
 You are an AI Learning Buddy helping a beginner student.
 
@@ -104,9 +100,7 @@ Instructions:
 - If the question is outside the selected topic, politely mention that and still try to help.
 """
 
-    # -----------------------------
-    # Generate Response
-    # -----------------------------
+    # Generate AI Response
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
